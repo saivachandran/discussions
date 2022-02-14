@@ -17,6 +17,7 @@ agent {label 'slave3'}
         }
     }
     post {
+
         success {  
             emailext body: 'Check console output at $BUILD_URL to view the results.', 
                      to: 'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
@@ -28,6 +29,9 @@ agent {label 'slave3'}
                      to: 'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
                      subject: 'SUCCESS KUBERNETES DEPLOYMENT - $PROJECT_NAME - #$BUILD_NUMBER',
                      attachmentsPattern: 'target/surefire-reports/emailable-report.html'
+        }
+        always {
+            cleanWs()
         }
     }
 }

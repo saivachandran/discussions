@@ -12,16 +12,21 @@ agent {label 'slave3'}
                 echo bat(returnStdout: true, script: 'mvn test')
             }
         }
-        stage('Sent an Email') {
-            steps {
-                emailext(to: 'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
-                        replyTo:'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
-                        subject: " Email Report from-'${env.JOB_NAME}'",
-                        attachmentsPattern: 'target/surefire-reports/emailable-report.html');
-            }
-         }
+    }
+    post {
+        success {  
+            emailext body: 'Check console output at $BUILD_URL to view the results.', 
+                     to: 'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
+                     subject: 'SUCCESS KUBERNETES DEPLOYMENT - $PROJECT_NAME - #$BUILD_NUMBER',
+                     attachmentsPattern: 'target/surefire-reports/emailable-report.html'
+        }
+        failure {
+            emailext body: 'Check console output at $BUILD_URL to view the results.', 
+                     to: 'krishna.raj@tisteps.co,vignesh.muthiyapillai@tisteps.co,noor.mohammed@tisteps.co', 
+                     subject: 'SUCCESS KUBERNETES DEPLOYMENT - $PROJECT_NAME - #$BUILD_NUMBER',
+                     attachmentsPattern: 'target/surefire-reports/emailable-report.html'
+        }
     }
 }
-
 
 ```
